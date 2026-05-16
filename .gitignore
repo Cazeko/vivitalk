@@ -50,3 +50,6 @@ Thumbs.db
 .vercel/
 coverage/
 .ipynb_checkpoints/
+
+# --- Local-only docs ---
+ANALYSIS.md
