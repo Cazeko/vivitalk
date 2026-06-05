@@ -24,8 +24,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Apple SD Gothic Neo", "Malgun Gothic", "sans-serif"],
-        display: ["Pretendard", "Inter", "ui-sans-serif", "system-ui"],
+        sans: ["Pretendard Variable", "Pretendard", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Apple SD Gothic Neo", "Malgun Gothic", "sans-serif"],
+        display: ["Pretendard Variable", "Pretendard", "Inter", "ui-sans-serif", "system-ui"],
       },
       animation: {
         "gradient-x": "gradient-x 12s ease infinite",

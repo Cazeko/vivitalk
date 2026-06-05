@@ -34,9 +34,20 @@ export function Pricing() {
     <section id="pricing" className="relative py-32 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-ink-50/70">요금제</div>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl font-bold tracking-tight">규모와 함께 커지는 가격</h2>
-          <p className="mt-3 text-ink-50/70">언제든 업그레이드/다운그레이드 가능합니다. 환불도 가능합니다.</p>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-ink-50/80 font-mono uppercase tracking-[0.18em]">
+            Pricing · 03
+          </div>
+          <h2 className="mt-5 font-display text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            규모와 함께
+            <br />
+            <span className="font-light text-ink-50/80">
+              커지는 가격.
+            </span>
+          </h2>
+          <p className="mt-6 text-ink-50/70 text-base md:text-lg">
+            언제든 업그레이드/다운그레이드,
+            <span className="text-ink-50/40"> 환불도 가능합니다.</span>
+          </p>
         </div>
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
           {TIERS.map((t, i) => (

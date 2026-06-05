@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen pt-32 overflow-hidden aurora-bg">
       <div className="absolute inset-0 -z-0">
-        <HeroScene />
+        <HeroScene dual />
       </div>
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-12 pb-20 text-center">
         <motion.div
@@ -26,17 +26,17 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="mt-6 font-display text-5xl md:text-7xl font-bold tracking-tight"
+          className="mt-6 font-display text-5xl md:text-7xl font-bold tracking-tight [text-shadow:0_4px_28px_rgba(11,11,16,0.95),0_0_60px_rgba(11,11,16,0.5)]"
         >
           <span className="block">당신의 데이터로 만드는</span>
-          <span className="gradient-text block">AI 챗봇, 5분이면 충분</span>
+          <span className="gradient-text block [text-shadow:0_2px_20px_rgba(124,58,237,0.55)]">AI 챗봇, 5분이면 충분</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-6 text-lg md:text-xl text-ink-50/70 max-w-2xl mx-auto"
+          className="mt-6 text-lg md:text-xl text-ink-50/80 max-w-2xl mx-auto [text-shadow:0_2px_16px_rgba(11,11,16,0.85)]"
         >
           PDF 한 번만 올리면 끝. <strong className="text-white">Vivitalk</strong>이 학습하고, <code className="text-brand-300">{`<script>`}</code> 한 줄로 어떤 웹사이트에서든 답합니다.
         </motion.p>

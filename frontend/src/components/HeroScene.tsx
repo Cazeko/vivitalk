@@ -1,75 +1,50 @@
 "use client";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Stars, OrbitControls, Environment } from "@react-three/drei";
-import { useRef, useMemo } from "react";
+import { Float, MeshDistortMaterial, Stars, Environment } from "@react-three/drei";
+import { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { FakeBrowserWindow } from "./FakeBrowserWindow";
 
-function FloatingOrb({ position, color, scale = 1 }: { position: [number, number, number]; color: string; scale?: number }) {
+function FloatingOrb({
+  position,
+  color,
+  scale = 1,
+}: {
+  position: [number, number, number];
+  color: string;
+  scale?: number;
+}) {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((state) => {
     if (!ref.current) return;
     const t = state.clock.getElapsedTime();
-    ref.current.rotation.x = t * 0.18;
-    ref.current.rotation.y = t * 0.22;
+    ref.current.rotation.x = t * 0.16;
+    ref.current.rotation.y = t * 0.2;
   });
   return (
-    <Float speed={2} rotationIntensity={1.1} floatIntensity={1.6}>
+    <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.1}>
       <mesh ref={ref} position={position} scale={scale}>
-        <icosahedronGeometry args={[1, 6]} />
+        <icosahedronGeometry args={[1, 5]} />
         <MeshDistortMaterial
           color={color}
-          roughness={0.2}
-          metalness={0.4}
-          distort={0.45}
-          speed={2}
-          envMapIntensity={1.4}
+          roughness={0.22}
+          metalness={0.55}
+          distort={0.4}
+          speed={1.6}
+          envMapIntensity={1.3}
         />
       </mesh>
     </Float>
   );
 }
 
-function ChatBubble3D({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) {
-  const group = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (!group.current) return;
-    const t = state.clock.getElapsedTime();
-    group.current.position.y = position[1] + Math.sin(t * 1.2) * 0.15;
-    group.current.rotation.z = Math.sin(t * 0.6) * 0.08;
-  });
-  return (
-    <group ref={group} position={position} scale={scale}>
-      <mesh>
-        <boxGeometry args={[2.4, 1.6, 0.4]} />
-        <meshStandardMaterial color="#7c3aed" metalness={0.3} roughness={0.25} />
-      </mesh>
-      <mesh position={[-0.4, -0.95, 0]}>
-        <coneGeometry args={[0.18, 0.4, 4]} />
-        <meshStandardMaterial color="#7c3aed" metalness={0.3} roughness={0.25} />
-      </mesh>
-      <mesh position={[-0.6, 0.05, 0.21]}>
-        <sphereGeometry args={[0.13, 16, 16]} />
-        <meshStandardMaterial color="#fafafa" emissive="#fafafa" emissiveIntensity={0.7} />
-      </mesh>
-      <mesh position={[0, 0.05, 0.21]}>
-        <sphereGeometry args={[0.13, 16, 16]} />
-        <meshStandardMaterial color="#fafafa" emissive="#fafafa" emissiveIntensity={0.7} />
-      </mesh>
-      <mesh position={[0.6, 0.05, 0.21]}>
-        <sphereGeometry args={[0.13, 16, 16]} />
-        <meshStandardMaterial color="#fafafa" emissive="#fafafa" emissiveIntensity={0.7} />
-      </mesh>
-    </group>
-  );
-}
-
-function ParticleField({ count = 800 }: { count?: number }) {
+function ParticleField({ count = 200 }: { count?: number }) {
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 18;
+      positions[i * 3] = (Math.random() - 0.5) * 32;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 22;
     }
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -77,50 +52,59 @@ function ParticleField({ count = 800 }: { count?: number }) {
   }, [count]);
   const ref = useRef<THREE.Points>(null);
   useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.04;
-    }
+    if (ref.current) ref.current.rotation.y = state.clock.elapsedTime * 0.03;
   });
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.04} color="#a78bfa" transparent opacity={0.7} />
+      <pointsMaterial size={0.035} color="#a78bfa" transparent opacity={0.55} />
     </points>
   );
 }
 
-export function HeroScene() {
+interface HeroSceneProps {
+  /** If true, mirrors a second browser window at top-left (used in /preview). */
+  dual?: boolean;
+}
+
+export function HeroScene({ dual = false }: HeroSceneProps = {}) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 7], fov: 50 }}
-      dpr={[1, 1.6]}
-      gl={{ antialias: true, alpha: true }}
+      camera={{ position: [0, 0, 6.5], fov: 35 }}
+      dpr={[1.5, 2]}
+      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
     >
       <color attach="background" args={["#0b0b10"]} />
-      <fog attach="fog" args={["#0b0b10", 9, 24]} />
+      <fog attach="fog" args={["#0b0b10", 10, 28]} />
 
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[5, 5, 5]} intensity={1.4} color="#c4b5fd" />
-      <directionalLight position={[-5, 2, -3]} intensity={0.7} color="#f0abfc" />
+      {/* Lighting */}
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[6, 6, 5]} intensity={1.2} color="#ffffff" />
+      <directionalLight position={[-5, -3, -2]} intensity={0.4} color="#c4b5fd" />
 
-      <Stars radius={40} depth={60} count={2400} factor={3.5} fade speed={1} />
-      <ParticleField count={500} />
+      {/* Background */}
+      <Stars radius={45} depth={60} count={1500} factor={3} fade speed={0.8} />
+      <ParticleField count={200} />
 
-      <FloatingOrb position={[-3.2, 1.4, -0.4]} color="#a78bfa" scale={0.95} />
-      <FloatingOrb position={[3.5, -0.9, -0.8]} color="#f0abfc" scale={1.15} />
-      <FloatingOrb position={[2.4, 1.8, -2.6]} color="#7c3aed" scale={0.7} />
-      <FloatingOrb position={[-2.8, -1.6, -2.2]} color="#fdba74" scale={0.6} />
+      {/* Hero — floating browser window, shifted right + smaller to clear hero copy */}
+      <FakeBrowserWindow
+        position={[4.2, -1.5, 0]}
+        rotation={[-0.05, -0.3, 0.02]}
+        scale={1}
+        distanceFactor={1.2}
+      />
 
-      <ChatBubble3D position={[0, 0.1, 1.4]} scale={1.05} />
+      {/* Mirrored window at top-left — ATELIER variant (different site + widget script) */}
+      {dual && (
+        <FakeBrowserWindow
+          position={[-1.9, -0.1, 0]}
+          rotation={[-0.05, 0.3, 0.005]}
+          scale={1}
+          distanceFactor={1.03}
+          variant="atelier"
+        />
+      )}
 
       <Environment preset="city" />
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        autoRotate
-        autoRotateSpeed={0.7}
-        maxPolarAngle={Math.PI / 1.7}
-        minPolarAngle={Math.PI / 2.4}
-      />
     </Canvas>
   );
 }
