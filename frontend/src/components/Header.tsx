@@ -13,6 +13,7 @@ export function Header() {
           <Logo />
           <nav className="hidden md:flex items-center gap-8 text-sm text-ink-50/80">
             <a href="#features" className="hover:text-white transition">기능</a>
+            <a href="#cases" className="hover:text-white transition">사례</a>
             <a href="#how" className="hover:text-white transition">동작 원리</a>
             <a href="#pricing" className="hover:text-white transition">요금제</a>
           </nav>
@@ -35,6 +36,7 @@ export function Header() {
               className="md:hidden glass rounded-2xl mt-2 px-4 py-3 flex flex-col gap-2"
             >
               <a href="#features" onClick={() => setOpen(false)} className="py-2">기능</a>
+              <a href="#cases" onClick={() => setOpen(false)} className="py-2">사례</a>
               <a href="#how" onClick={() => setOpen(false)} className="py-2">동작 원리</a>
               <a href="#pricing" onClick={() => setOpen(false)} className="py-2">요금제</a>
               <Link href="/login" className="py-2">로그인</Link>

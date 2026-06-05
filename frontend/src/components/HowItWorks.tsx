@@ -13,8 +13,16 @@ export function HowItWorks() {
     <section id="how" className="relative py-32 border-t border-white/5">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-ink-50/70">동작 원리</div>
-          <h2 className="mt-4 font-display text-4xl md:text-5xl font-bold tracking-tight">4단계로 끝나는 출시</h2>
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-ink-50/80 font-mono uppercase tracking-[0.18em]">
+            How It Works · 04
+          </div>
+          <h2 className="mt-5 font-display text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+            4단계로
+            <br />
+            <span className="font-light text-ink-50/80">
+              끝나는 출시.
+            </span>
+          </h2>
         </div>
         <div className="relative grid md:grid-cols-4 gap-6">
           <div className="hidden md:block absolute top-9 left-12 right-12 h-px bg-gradient-to-r from-transparent via-brand-500/40 to-transparent" />
