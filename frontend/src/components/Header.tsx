@@ -11,7 +11,7 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-6 mt-4">
         <div className="glass rounded-2xl px-4 py-3 flex items-center justify-between">
           <Logo />
-          <nav className="hidden md:flex items-center gap-8 text-sm text-ink-50/80">
+          <nav aria-label="주요 메뉴" className="hidden md:flex items-center gap-8 text-sm text-ink-50/80">
             <a href="#features" className="hover:text-white transition">기능</a>
             <a href="#cases" className="hover:text-white transition">사례</a>
             <a href="#how" className="hover:text-white transition">동작 원리</a>
@@ -23,13 +23,21 @@ export function Header() {
               무료로 시작
             </Link>
           </div>
-          <button className="md:hidden p-2" onClick={() => setOpen((v) => !v)} aria-label="메뉴">
-            <svg viewBox="0 0 24 24" className="w-6 h-6"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          <button
+            className="md:hidden p-2"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="메뉴"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+          >
+            <svg viewBox="0 0 24 24" className="w-6 h-6" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
         </div>
         <AnimatePresence>
           {open && (
-            <motion.div
+            <motion.nav
+              id="mobile-menu"
+              aria-label="모바일 메뉴"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -41,7 +49,7 @@ export function Header() {
               <a href="#pricing" onClick={() => setOpen(false)} className="py-2">요금제</a>
               <Link href="/login" className="py-2">로그인</Link>
               <Link href="/signup" className="py-2 px-3 rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 text-center">무료로 시작</Link>
-            </motion.div>
+            </motion.nav>
           )}
         </AnimatePresence>
       </div>

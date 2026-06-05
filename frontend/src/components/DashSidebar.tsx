@@ -17,13 +17,13 @@ export function DashSidebar() {
   return (
     <aside className="hidden md:flex w-64 flex-col border-r border-white/5 bg-ink-900/60 backdrop-blur sticky top-0 h-screen">
       <div className="px-5 pt-5 pb-3"><Logo /></div>
-      <nav className="px-2 py-2 flex-1 space-y-1">
+      <nav aria-label="대시보드 메뉴" className="px-2 py-2 flex-1 space-y-1">
         {NAV.map((n) => {
           const active = pathname === n.href || (n.href !== "/dashboard" && pathname.startsWith(n.href));
           return (
             <Link key={n.href} href={n.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition ${active ? "bg-white/10 text-white" : "text-ink-50/70 hover:bg-white/5 hover:text-white"}`}>
-              <svg viewBox="0 0 24 24" className="w-4 h-4"><path fill="currentColor" d={n.icon} /></svg>
+              <svg viewBox="0 0 24 24" className="w-4 h-4" aria-hidden="true"><path fill="currentColor" d={n.icon} /></svg>
               <span>{n.label}</span>
             </Link>
           );

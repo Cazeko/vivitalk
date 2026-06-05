@@ -8,7 +8,7 @@ const HeroScene = dynamic(() => import("./HeroScene").then((m) => m.HeroScene), 
 export function Hero() {
   return (
     <section className="relative min-h-screen pt-32 overflow-hidden aurora-bg">
-      <div className="absolute inset-0 -z-0">
+      <div className="absolute inset-0 -z-0" aria-hidden="true">
         <HeroScene dual />
       </div>
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-12 pb-20 text-center">

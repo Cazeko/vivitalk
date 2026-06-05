@@ -68,17 +68,24 @@
   function buildDom() {
     bubble = document.createElement('button');
     bubble.className = 'vt-bubble';
-    bubble.setAttribute('aria-label', 'Open chat');
-    bubble.innerHTML = '<svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7zm0 4h7v2H7z"/></svg>';
+    bubble.setAttribute('aria-label', '채팅 열기');
+    bubble.setAttribute('aria-haspopup', 'dialog');
+    bubble.setAttribute('aria-expanded', 'false');
+    bubble.setAttribute('aria-controls', 'vt-panel');
+    bubble.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM7 9h10v2H7zm0 4h7v2H7z"/></svg>';
     bubble.onclick = togglePanel;
 
     panel = document.createElement('div');
     panel.className = 'vt-panel';
+    panel.id = 'vt-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'false');
+    panel.setAttribute('aria-label', name + ' 채팅 대화창');
     panel.innerHTML =
-      '<div class="vt-head"><div class="t"><span class="dot"></span><span class="vt-name">' + escape(name) + '</span></div><button class="vt-close" aria-label="Close">✕</button></div>' +
-      '<div class="vt-msgs"></div>' +
-      '<div class="vt-typing" style="display:none">답변을 작성하는 중…</div>' +
-      '<div class="vt-input"><input type="text" placeholder="메시지를 입력하세요" /><button>전송</button></div>' +
+      '<div class="vt-head"><div class="t"><span class="dot" aria-hidden="true"></span><span class="vt-name">' + escape(name) + '</span></div><button class="vt-close" aria-label="채팅 닫기">✕</button></div>' +
+      '<div class="vt-msgs" role="log" aria-live="polite" aria-atomic="false" aria-label="대화 내용"></div>' +
+      '<div class="vt-typing" role="status" aria-live="polite" style="display:none">답변을 작성하는 중…</div>' +
+      '<div class="vt-input"><input type="text" aria-label="메시지 입력" placeholder="메시지를 입력하세요" /><button>전송</button></div>' +
       '<div class="vt-foot">Powered by Vivitalk</div>';
 
     panel.style.setProperty('--vt-color', primary);
@@ -97,6 +104,12 @@
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         send();
+      }
+    });
+    panel.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && open) {
+        e.preventDefault();
+        togglePanel();
       }
     });
   }
@@ -127,11 +140,14 @@
 
   function togglePanel() {
     open = !open;
+    bubble.setAttribute('aria-expanded', open ? 'true' : 'false');
+    bubble.setAttribute('aria-label', open ? '채팅 닫기' : '채팅 열기');
     if (open) {
       panel.classList.add('open');
       setTimeout(function () { inputEl.focus(); }, 50);
     } else {
       panel.classList.remove('open');
+      bubble.focus();
     }
   }
 

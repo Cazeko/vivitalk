@@ -69,6 +69,7 @@ interface HeroSceneProps {
 export function HeroScene({ dual = false }: HeroSceneProps = {}) {
   return (
     <Canvas
+      aria-hidden="true"
       camera={{ position: [0, 0, 6.5], fov: 35 }}
       dpr={[1.5, 2]}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
