@@ -47,11 +47,33 @@ export default function ChatbotsListPage() {
       </div>
 
       <div className="mt-8 space-y-3">
-        {loading && <div className="text-ink-50/60">로딩 중…</div>}
+        {loading && (
+          <>
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="glass rounded-2xl p-5 flex items-center gap-4 animate-pulse">
+                <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-4 bg-white/10 rounded w-1/3" />
+                  <div className="h-3 bg-white/5 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </>
+        )}
         {!loading && bots.length === 0 && (
-          <div className="glass rounded-2xl p-10 text-center">
-            <p className="text-ink-50/70">아직 챗봇이 없습니다.</p>
-            <button onClick={() => setShowModal(true)} className="mt-4 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition">
+          <div className="glass rounded-3xl p-14 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-600/30 to-fuchsia-600/20 grid place-items-center mb-5">
+              <svg viewBox="0 0 24 24" className="w-8 h-8 text-brand-400" fill="currentColor" aria-hidden="true">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+                <path d="M7 9h10v2H7zm0-3h10v2H7z"/>
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold">아직 챗봇이 없어요</h3>
+            <p className="mt-2 text-ink-50/60 max-w-xs mx-auto">데이터를 업로드하고 5분 안에 첫 AI 챗봇을 만들어보세요.</p>
+            <button
+              onClick={() => setShowModal(true)}
+              className="mt-6 px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold hover:opacity-95 transition shadow-xl shadow-brand-900/30"
+            >
               첫 챗봇 만들기 →
             </button>
           </div>
