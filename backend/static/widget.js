@@ -193,6 +193,12 @@
       })
       .catch(function (err) {
         console.error('[Vivitalk] init failed:', err);
+        // Render the widget anyway with defaults so a non-technical site owner
+        // sees the embed actually loaded (the bubble appears) and gets a
+        // visible, recoverable message — instead of a blank page with the only
+        // signal hidden in the dev console, which they will never open.
+        buildDom();
+        addMsg('bot', '챗봇을 불러오지 못했어요. 잠시 후 새로고침해 주세요. 문제가 계속되면 챗봇 ID와 문서 처리 상태를 확인해 주세요.');
       });
   }
 
