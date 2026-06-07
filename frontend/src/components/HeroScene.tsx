@@ -1,7 +1,7 @@
 "use client";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, MeshDistortMaterial, Stars, Environment } from "@react-three/drei";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { FakeBrowserWindow } from "./FakeBrowserWindow";
 
@@ -61,6 +61,63 @@ function ParticleField({ count = 200 }: { count?: number }) {
   );
 }
 
+/**
+ * (A) 화면 비율에 따라 세로 fov를 보정해 "수평 프레이밍"을 일정하게 유지.
+ * three.js의 fov는 세로 화각이라, 화면이 기준 비율(16:9)보다 좁아지면 가로 가시 영역이
+ * 줄어 오른쪽으로 치우친 창이 잘린다. 좁을수록 fov를 키워(=카메라를 빼는 효과) 가로 구도를 보존.
+ */
+function ResponsiveCamera({
+  baseFov = 35,
+  refAspect = 16 / 9,
+  maxFov = 60,
+}: { baseFov?: number; refAspect?: number; maxFov?: number }) {
+  const camera = useThree((s) => s.camera);
+  const size = useThree((s) => s.size);
+  useEffect(() => {
+    const aspect = size.width / size.height;
+    const cam = camera as THREE.PerspectiveCamera;
+    // 좁을수록 fov를 키우되, 어안 왜곡을 막기 위해 maxFov로 클램프(나머지는 창 재배치로 처리).
+    const widened = THREE.MathUtils.radToDeg(
+      2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(baseFov) / 2) * (refAspect / aspect)),
+    );
+    cam.fov = aspect < refAspect ? Math.min(maxFov, widened) : baseFov;
+    cam.updateProjectionMatrix();
+  }, [camera, size, baseFov, refAspect, maxFov]);
+  return null;
+}
+
+/**
+ * (B) 화면 폭 기준으로 창을 재배치/축소. 좁은 화면(<768px)에서는 창을 중앙으로 모으고
+ * 크기를 줄이며, 두 번째(dual) 창은 텍스트와 겹치므로 숨긴다. 데스크톱 구도는 그대로 유지.
+ */
+function SceneContent({ dual }: { dual: boolean }) {
+  const width = useThree((s) => s.size.width);
+  const narrow = width < 768;
+
+  return (
+    <>
+      {/* Hero — floating browser window */}
+      <FakeBrowserWindow
+        position={narrow ? [0, -1.5, 0] : [4.2, -1.5, 0]}
+        rotation={narrow ? [-0.04, -0.12, 0.01] : [-0.05, -0.3, 0.02]}
+        scale={narrow ? 0.6 : 1}
+        distanceFactor={1.2}
+      />
+
+      {/* Mirrored window — ATELIER variant. 좁은 화면에선 숨김(텍스트 겹침 방지) */}
+      {dual && !narrow && (
+        <FakeBrowserWindow
+          position={[-1.9, -0.1, 0]}
+          rotation={[-0.05, 0.3, 0.005]}
+          scale={1}
+          distanceFactor={1.03}
+          variant="atelier"
+        />
+      )}
+    </>
+  );
+}
+
 interface HeroSceneProps {
   /** If true, mirrors a second browser window at top-left (used in /preview). */
   dual?: boolean;
@@ -77,6 +134,9 @@ export function HeroScene({ dual = false }: HeroSceneProps = {}) {
       <color attach="background" args={["#0b0b10"]} />
       <fog attach="fog" args={["#0b0b10", 10, 28]} />
 
+      {/* (A) 비율 적응 카메라 */}
+      <ResponsiveCamera baseFov={35} />
+
       {/* Lighting */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[6, 6, 5]} intensity={1.2} color="#ffffff" />
@@ -86,24 +146,8 @@ export function HeroScene({ dual = false }: HeroSceneProps = {}) {
       <Stars radius={45} depth={60} count={1500} factor={3} fade speed={0.8} />
       <ParticleField count={200} />
 
-      {/* Hero — floating browser window, shifted right + smaller to clear hero copy */}
-      <FakeBrowserWindow
-        position={[4.2, -1.5, 0]}
-        rotation={[-0.05, -0.3, 0.02]}
-        scale={1}
-        distanceFactor={1.2}
-      />
-
-      {/* Mirrored window at top-left — ATELIER variant (different site + widget script) */}
-      {dual && (
-        <FakeBrowserWindow
-          position={[-1.9, -0.1, 0]}
-          rotation={[-0.05, 0.3, 0.005]}
-          scale={1}
-          distanceFactor={1.03}
-          variant="atelier"
-        />
-      )}
+      {/* (B) 화면 폭에 맞춰 창 재배치/축소 */}
+      <SceneContent dual={dual} />
 
       <Environment preset="city" />
     </Canvas>

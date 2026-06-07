@@ -1,33 +1,14 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { BILLING_PLANS, PlanId, formatWon } from "@/lib/plans";
 
-const TIERS = [
-  {
-    name: "Starter",
-    price: "₩0",
-    period: "/ 월",
-    bullets: ["챗봇 1개", "메시지 100건 / 월", "표준 위젯", "이메일 지원"],
-    cta: "무료로 시작",
-    popular: false,
-  },
-  {
-    name: "Pro",
-    price: "₩49,000",
-    period: "/ 월",
-    bullets: ["챗봇 5개", "메시지 5,000건 / 월", "위젯 커스터마이징", "우선 지원"],
-    cta: "Pro 시작",
-    popular: true,
-  },
-  {
-    name: "Business",
-    price: "₩199,000",
-    period: "/ 월",
-    bullets: ["무제한 챗봇", "메시지 50,000건 / 월", "전담 매니저", "SLA 99.9%"],
-    cta: "문의하기",
-    popular: false,
-  },
-];
+// 가격·혜택은 lib/plans.ts 단일 소스에서 가져오고, 랜딩 전용 마케팅 CTA만 여기서 정의.
+const CTA: Record<PlanId, string> = {
+  starter: "무료로 시작",
+  pro: "Pro 시작",
+  business: "문의하기",
+};
 
 export function Pricing() {
   return (
@@ -50,29 +31,29 @@ export function Pricing() {
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-          {TIERS.map((t, i) => (
+          {BILLING_PLANS.map((t, i) => (
             <motion.div
-              key={t.name}
+              key={t.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative rounded-3xl p-7 glass overflow-hidden ${t.popular ? "ring-2 ring-brand-500/60" : ""}`}
+              className={`relative rounded-3xl p-7 glass overflow-hidden ${t.highlight ? "ring-2 ring-brand-500/60" : ""}`}
             >
-              {t.popular && (
+              {t.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[11px] bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold">
                   가장 인기
                 </div>
               )}
               <h3 className="text-2xl font-bold">{t.name}</h3>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold">{t.price}</span>
-                <span className="text-ink-50/60">{t.period}</span>
+                <span className="text-4xl font-bold">{formatWon(t.priceMonthly)}</span>
+                <span className="text-ink-50/60">/ 월</span>
               </div>
               <ul className="mt-6 space-y-3 text-sm">
                 {t.bullets.map((b) => (
                   <li key={b} className="flex items-start gap-2 text-ink-50/85">
-                    <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-400 mt-0.5 flex-none">
+                    <svg viewBox="0 0 24 24" className="w-5 h-5 text-emerald-400 mt-0.5 flex-none" aria-hidden="true">
                       <path fill="currentColor" d="M9 16.2l-3.5-3.6-1.4 1.4L9 19l11-11-1.4-1.4z" />
                     </svg>
                     {b}
@@ -82,12 +63,12 @@ export function Pricing() {
               <Link
                 href="/signup"
                 className={`mt-7 block text-center px-5 py-3 rounded-2xl font-semibold transition ${
-                  t.popular
+                  t.highlight
                     ? "bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:opacity-95 shadow-xl shadow-brand-900/40"
                     : "bg-white/5 hover:bg-white/10 border border-white/10"
                 }`}
               >
-                {t.cta}
+                {CTA[t.id]}
               </Link>
             </motion.div>
           ))}

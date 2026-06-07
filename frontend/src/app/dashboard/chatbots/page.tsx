@@ -17,6 +17,14 @@ export default function ChatbotsListPage() {
   };
   useEffect(() => { refresh(); }, []);
 
+  // 온보딩 가이드에서 "/dashboard/chatbots#new" 로 진입하면 생성 모달 자동 오픈
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#new") {
+      setShowModal(true);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
   const create = async (e: React.FormEvent) => {
     e.preventDefault();
     setCreating(true);
@@ -35,7 +43,7 @@ export default function ChatbotsListPage() {
   };
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">챗봇</h1>

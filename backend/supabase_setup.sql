@@ -21,10 +21,13 @@ CREATE TABLE IF NOT EXISTS public.clients (
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
   name TEXT NOT NULL,
   email TEXT,
+  onboarding JSONB NOT NULL DEFAULT '{}'::jsonb,  -- 온보딩 진행 상태 { embedded, dismissed }
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_clients_user_id ON public.clients(user_id);
+-- 기존 DB 마이그레이션 (컬럼이 없을 때만 추가)
+ALTER TABLE public.clients ADD COLUMN IF NOT EXISTS onboarding JSONB NOT NULL DEFAULT '{}'::jsonb;
 
 -- Chatbots
 CREATE TABLE IF NOT EXISTS public.chatbots (

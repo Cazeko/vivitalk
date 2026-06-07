@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { api, Chatbot, DocumentInfo, ChatSource } from "@/lib/api";
+import { markEmbedded } from "@/lib/onboarding";
 import Link from "next/link";
 
 type Tab = "sources" | "preview" | "settings" | "embed";
@@ -21,11 +22,19 @@ export default function ChatbotDetailPage() {
     api.getChatbot(id).then((b) => { setBot(b); setLoading(false); }).catch(() => router.replace("/dashboard/chatbots"));
   }, [id, router]);
 
+  // 온보딩 가이드 딥링크: #embed / #sources 등으로 진입 시 해당 탭 선택
+  useEffect(() => {
+    const h = window.location.hash.replace("#", "");
+    if (h === "sources" || h === "preview" || h === "embed" || h === "settings") {
+      setTab(h as Tab);
+    }
+  }, []);
+
   if (loading) return <div className="p-8 text-ink-50/60">로딩 중…</div>;
   if (!bot) return null;
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="p-8 max-w-6xl mx-auto">
       <Link href="/dashboard/chatbots" className="text-sm text-ink-50/60 hover:text-white">← 챗봇 목록</Link>
       <div className="mt-3 flex items-center gap-3">
         <span className="w-3 h-3 rounded-full" style={{ background: bot.primary_color }} />
@@ -225,19 +234,22 @@ function EmbedTab({ bot }: { bot: Chatbot }) {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     await navigator.clipboard.writeText(code);
+    markEmbedded(); // 온보딩 "웹사이트에 연결하기" 단계 완료 처리
     setCopied(true); setTimeout(() => setCopied(false), 1500);
   };
   return (
     <div className="space-y-6">
       <div className="glass rounded-3xl p-6">
-        <h3 className="font-semibold">웹사이트에 임베드</h3>
-        <p className="text-sm text-ink-50/60 mt-1">아래 코드를 사이트의 <code>{`</body>`}</code> 직전에 붙여 넣으세요. 그게 끝입니다.</p>
-        <div className="mt-4 relative">
-          <pre className="bg-black/40 rounded-2xl p-5 text-sm text-emerald-300 overflow-x-auto font-mono">{code}</pre>
-          <button onClick={copy} className="absolute top-3 right-3 px-3 py-1.5 rounded-lg text-xs bg-white/10 hover:bg-white/20 transition">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-semibold">웹사이트에 임베드</h3>
+            <p className="text-sm text-ink-50/60 mt-1">아래 코드를 사이트의 <code>{`</body>`}</code> 직전에 붙여 넣으세요. 그게 끝입니다.</p>
+          </div>
+          <button onClick={copy} className="flex-none px-3 py-1.5 rounded-lg text-xs bg-white/10 hover:bg-white/20 transition">
             {copied ? "복사됨!" : "복사"}
           </button>
         </div>
+        <pre className="mt-4 bg-black/40 rounded-2xl p-5 text-sm text-emerald-300 overflow-x-auto font-mono">{code}</pre>
       </div>
       <div className="glass rounded-3xl p-6">
         <h3 className="font-semibold">테스트 페이지</h3>

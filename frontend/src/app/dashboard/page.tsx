@@ -4,6 +4,7 @@ import Link from "next/link";
 import { api, Chatbot } from "@/lib/api";
 import { useAuthStore } from "@/stores/authStore";
 import { formatDate } from "@/lib/utils";
+import { OnboardingGuide } from "@/components/OnboardingGuide";
 
 export default function DashboardHome() {
   const { user } = useAuthStore();
@@ -21,7 +22,7 @@ export default function DashboardHome() {
   const totalDocs = bots.reduce((s, b) => s + (b.document_count || 0), 0);
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">안녕하세요, {user?.first_name || user?.email?.split("@")[0]} 님</h1>
@@ -31,6 +32,8 @@ export default function DashboardHome() {
           + 새 챗봇 만들기
         </Link>
       </div>
+
+      <OnboardingGuide bots={bots} loading={loading} />
 
       <div className="mt-8 grid sm:grid-cols-3 gap-4">
         <div className="glass rounded-2xl p-5">

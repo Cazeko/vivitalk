@@ -49,6 +49,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
         "last_name": metadata.get("last_name"),
         "is_active": True,
         "is_verified": user.email_confirmed_at is not None,
+        "onboarding": client.get("onboarding") or {},
         "created_at": user.created_at,
         "updated_at": user.updated_at,
     }

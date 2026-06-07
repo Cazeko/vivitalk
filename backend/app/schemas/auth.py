@@ -23,6 +23,12 @@ class UserLogin(BaseModel):
     password: str = Field(..., min_length=1, max_length=100)
 
 
+class OnboardingUpdate(BaseModel):
+    """온보딩 진행 상태 부분 업데이트 (전달된 필드만 병합)."""
+    embedded: Optional[bool] = None
+    dismissed: Optional[bool] = None
+
+
 class UserResponse(BaseModel):
     id: str
     email: EmailStr
@@ -31,5 +37,6 @@ class UserResponse(BaseModel):
     last_name: Optional[str] = None
     is_active: bool = True
     is_verified: bool = False
+    onboarding: dict = Field(default_factory=dict)
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

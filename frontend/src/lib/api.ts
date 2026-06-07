@@ -1,5 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 
+export interface OnboardingState {
+  embedded?: boolean;
+  dismissed?: boolean;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -8,6 +13,7 @@ export interface User {
   last_name?: string | null;
   is_active: boolean;
   is_verified: boolean;
+  onboarding?: OnboardingState;
   created_at?: string | null;
   updated_at?: string | null;
 }
@@ -123,6 +129,11 @@ class Api {
 
   async me(): Promise<User> {
     const { data } = await this.http.get<User>("/auth/me");
+    return data;
+  }
+
+  async updateOnboarding(partial: OnboardingState): Promise<User> {
+    const { data } = await this.http.patch<User>("/auth/onboarding", partial);
     return data;
   }
 

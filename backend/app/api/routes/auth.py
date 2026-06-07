@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.core.config import settings
 from app.core.database import get_admin_supabase
 from app.core.security import get_current_user
-from app.schemas.auth import Token, UserCreate, UserResponse
+from app.schemas.auth import OnboardingUpdate, Token, UserCreate, UserResponse
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -101,6 +101,34 @@ async def me(current_user: dict = Depends(get_current_user)):
         last_name=current_user.get("last_name"),
         is_active=current_user.get("is_active", True),
         is_verified=current_user.get("is_verified", False),
+        onboarding=current_user.get("onboarding") or {},
+        created_at=current_user.get("created_at"),
+        updated_at=current_user.get("updated_at"),
+    )
+
+
+@router.patch("/onboarding", response_model=UserResponse)
+async def update_onboarding(data: OnboardingUpdate, current_user: dict = Depends(get_current_user)):
+    """온보딩 진행 상태를 서버(clients.onboarding)에 병합 저장 — 기기 간 동기화."""
+    sb = get_admin_supabase()
+    current = current_user.get("onboarding") or {}
+    patch = {k: v for k, v in data.model_dump(exclude_unset=True).items() if v is not None}
+    merged = {**current, **patch}
+    try:
+        sb.table("clients").update({"onboarding": merged}).eq("id", current_user["client_id"]).execute()
+    except Exception as e:
+        logger.error(f"onboarding update failed: {e}")
+        raise HTTPException(status_code=500, detail="온보딩 상태 저장에 실패했습니다")
+
+    return UserResponse(
+        id=current_user["id"],
+        email=current_user["email"],
+        company_name=current_user.get("company_name"),
+        first_name=current_user.get("first_name"),
+        last_name=current_user.get("last_name"),
+        is_active=current_user.get("is_active", True),
+        is_verified=current_user.get("is_verified", False),
+        onboarding=merged,
         created_at=current_user.get("created_at"),
         updated_at=current_user.get("updated_at"),
     )
