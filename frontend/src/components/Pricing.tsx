@@ -38,7 +38,7 @@ export function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className={`relative rounded-3xl p-7 glass overflow-hidden ${t.highlight ? "ring-2 ring-brand-500/60" : ""}`}
+              className={`relative rounded-3xl p-7 glass ${t.highlight ? "ring-2 ring-brand-500/60" : ""}`}
             >
               {t.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[11px] bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold">
@@ -62,10 +62,10 @@ export function Pricing() {
               </ul>
               <Link
                 href="/signup"
-                className={`mt-7 block text-center px-5 py-3 rounded-2xl font-semibold transition ${
+                className={`mt-7 block text-center px-5 py-3 rounded-2xl font-semibold transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] ${
                   t.highlight
-                    ? "bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:opacity-95 shadow-xl shadow-brand-900/40"
-                    : "bg-white/5 hover:bg-white/10 border border-white/10"
+                    ? "bg-gradient-to-r from-brand-600 to-fuchsia-600 shadow-xl shadow-brand-900/40 hover:brightness-110 hover:shadow-[0_10px_24px_-10px_rgba(124,58,237,0.6)]"
+                    : "bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/30"
                 }`}
               >
                 {CTA[t.id]}

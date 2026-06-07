@@ -118,14 +118,19 @@ export function CasePersonas() {
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.55, delay: i * 0.06, ease: [0.22, 0.61, 0.36, 1] }}
               whileHover={{ y: -10, scale: 1.015 }}
-              className="group relative bg-white rounded-3xl p-7 md:p-8 text-ink-900 shadow-2xl shadow-black/40 ring-1 ring-transparent transition-[box-shadow,ring,background] duration-300 ease-out cursor-pointer hover:ring-2 hover:ring-[#a855f7]/45 hover:shadow-[0_50px_90px_-20px_rgba(124,58,237,0.55),0_0_0_1px_rgba(255,255,255,0.04)]"
+              className="group relative bg-white rounded-3xl p-7 md:p-8 text-ink-900 shadow-2xl shadow-black/40 transition-shadow duration-300 ease-out cursor-pointer hover:shadow-[0_50px_90px_-20px_rgba(124,58,237,0.55),0_0_0_1px_rgba(255,255,255,0.04)]"
             >
-              {/* Top accent bar — grows from left on hover */}
+              {/* Accent outline — traces the card's full rounded border on hover */}
               <div
                 aria-hidden
-                className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-t-3xl"
+                className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-out"
                 style={{
-                  background: `linear-gradient(90deg, ${ACCENT_DEEP}, ${ACCENT})`,
+                  padding: "1.5px",
+                  background: `linear-gradient(135deg, ${ACCENT_DEEP}, ${ACCENT}, ${ACCENT_DEEP})`,
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "xor",
+                  maskComposite: "exclude",
                 }}
               />
 

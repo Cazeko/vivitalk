@@ -32,6 +32,14 @@ body {
   }
 }
 
+/* Custom cursor: hide the native pointer while CursorCustom is mounted (fine-pointer devices only) */
+@media (pointer: fine) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
 .gradient-text {
   background: linear-gradient(90deg, #c4b5fd, #f0abfc, #fdba74, #c4b5fd);
   background-size: 300% 300%;

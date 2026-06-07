@@ -1,4 +1,6 @@
 import { Header } from "@/components/Header";
+import { CursorGlow } from "@/components/CursorGlow";
+import { CustomCursor } from "@/components/CustomCursor";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
 import { CasePersonas } from "@/components/CasePersonas";
@@ -17,6 +19,8 @@ export default function HomePage() {
         본문 바로가기
       </a>
       <Header />
+      <CursorGlow />
+      <CustomCursor />
       <main id="main" tabIndex={-1} className="relative outline-none">
         <Hero />
         <Features />

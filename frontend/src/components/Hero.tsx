@@ -36,7 +36,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-6 text-lg md:text-xl text-ink-50/80 max-w-2xl mx-auto [text-shadow:0_2px_16px_rgba(11,11,16,0.85)]"
+          className="mt-6 text-lg md:text-xl text-ink-50/80 max-w-4xl mx-auto md:whitespace-nowrap [text-shadow:0_2px_16px_rgba(11,11,16,0.85)]"
         >
           PDF 한 번만 올리면 끝. <strong className="text-white">Vivitalk</strong>이 학습하고, <code className="text-brand-300">{`<script>`}</code> 한 줄로 어떤 웹사이트에서든 답합니다.
         </motion.p>
@@ -49,13 +49,13 @@ export function Hero() {
         >
           <Link
             href="/signup"
-            className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:opacity-95 transition shadow-2xl shadow-brand-900/40 font-semibold"
+            className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold shadow-2xl shadow-brand-900/40 transition-all duration-200 hover:scale-[1.05] hover:brightness-110 hover:shadow-[0_25px_70px_-12px_rgba(124,58,237,0.7)] active:scale-[0.97]"
           >
             무료로 시작하기 →
           </Link>
           <a
             href="#how"
-            className="px-7 py-3.5 rounded-2xl border border-white/15 hover:bg-white/5 transition font-semibold"
+            className="px-7 py-3.5 rounded-2xl border border-white/15 font-semibold transition-all duration-200 hover:scale-[1.05] hover:bg-white/10 hover:border-white/35 active:scale-[0.97]"
           >
             동작 원리 보기
           </a>

@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Communication
+
+Always respond to the user in Korean (한글), using polite/formal speech (존댓말).
+
 ## Commands
 
 ### Frontend (Next.js — `frontend/`)

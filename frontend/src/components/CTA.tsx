@@ -12,7 +12,7 @@ export function CTA() {
           <span className="gradient-text">내일부터 Vivitalk과 대화</span>
         </h2>
         <p className="mt-5 text-lg text-ink-50/70">신용카드 없이 무료로 시작. 언제든 해지할 수 있습니다.</p>
-        <Link href="/signup" className="mt-10 inline-block px-9 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold shadow-2xl shadow-brand-900/40 hover:opacity-95 transition">
+        <Link href="/signup" className="mt-10 inline-block px-9 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 font-semibold shadow-2xl shadow-brand-900/40 transition-all duration-200 hover:scale-[1.06] hover:brightness-110 hover:shadow-[0_30px_80px_-14px_rgba(124,58,237,0.75)] active:scale-[0.97]">
           무료로 시작하기 →
         </Link>
       </div>

@@ -32,14 +32,14 @@ export function Header() {
                 <span className="text-sm text-ink-50/80">
                   환영합니다, <span className="font-semibold text-white max-w-[160px] truncate inline-block align-bottom">{displayName}</span>님
                 </span>
-                <Link href="/dashboard" className="px-4 py-2 text-sm rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:opacity-90 transition shadow-lg shadow-brand-900/40">
+                <Link href="/dashboard" className="px-4 py-2 text-sm rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 shadow-lg shadow-brand-900/40 transition-all duration-200 hover:scale-[1.06] hover:brightness-110 hover:shadow-[0_15px_40px_-8px_rgba(124,58,237,0.65)] active:scale-[0.96]">
                   대시보드
                 </Link>
               </>
             ) : (
               <>
-                <Link href="/login" className="px-4 py-2 text-sm rounded-xl hover:bg-white/5">로그인</Link>
-                <Link href="/signup" className="px-4 py-2 text-sm rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:opacity-90 transition shadow-lg shadow-brand-900/40">
+                <Link href="/login" className="px-4 py-2 text-sm rounded-xl transition-all duration-200 hover:scale-[1.06] hover:bg-white/10 active:scale-[0.96]">로그인</Link>
+                <Link href="/signup" className="px-4 py-2 text-sm rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 shadow-lg shadow-brand-900/40 transition-all duration-200 hover:scale-[1.06] hover:brightness-110 hover:shadow-[0_15px_40px_-8px_rgba(124,58,237,0.65)] active:scale-[0.96]">
                   무료로 시작
                 </Link>
               </>
